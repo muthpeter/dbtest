@@ -7,20 +7,27 @@ const Advert = require('../model/advertModel')
 
 router.get('/',async  (req,res) => {
     const advert = await Advert.find()
-    console.log(advert)
+    res.send(advert)
 }
     )
 
-router.get('/add/:id', async (req,res) =>{
+router.post('/:id', async (req,res) =>{
     try{ 
     var {id,address,link,price} = await fetchDB(req.params.id)
-     const go212al =  Advert.create({id, address, link, price})
-     res.send(200,go212al)
+     const returnData =  Advert.create({id, address, link, price})
+     res.send(200,returnData)
      } catch (err) {
          console.log(err)
      } 
 })
 
-
+router.delete('/:id', async (req,res) => {
+    try{
+     await Advert.deleteOne({id : req.params.id})
+     res.send(`deleted item with id : ${req.params.id}`)
+    } catch(err){
+        console.log(err)
+        }
+})
 
 module.exports = router
